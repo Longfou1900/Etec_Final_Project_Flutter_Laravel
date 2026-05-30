@@ -26,6 +26,18 @@ sqlite3
 Then run:
 php artisan migrate
 
+git branch -m master main
+git fetch origin
+git branch -u origin/main main
+git remote set-head origin -a
 
+USER@DESKTOP-M1TVSAR MINGW64 /d/ETEC/11_1_30mns/etec-final-project (master)
+$ git checkout -b nona
+Switched to a new branch 'nona'
 
+USER@DESKTOP-M1TVSAR MINGW64 /d/ETEC/11_1_30mns/etec-final-project (nona)
+$ 
 
+git remote -v
+git switch -c development
+git branch
