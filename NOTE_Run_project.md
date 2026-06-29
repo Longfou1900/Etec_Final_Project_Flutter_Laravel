@@ -33,3 +33,22 @@ $ php artisan migrate
 php artisan view:clear
 php artisan route:clear
 php artisan serve
+
+
+# 1. Install dependencies (if vendor/ missing)
+composer install
+
+# 2. Copy env (already done — skip if .env exists)
+cp .env.example .env
+php artisan key:generate
+
+# 3. Run migrations (creates tables including the `role` column)
+php artisan migrate:fresh
+
+# 4. Create your admin user (run once)
+php artisan tinker
+>>> App\Models\User::create(['name'=>'Admin Boss','email'=>'admin@demo.com','password'=>bcrypt('password'),'role'=>'admin']);
+>>> exit
+
+# 5. Start server
+php artisan serve

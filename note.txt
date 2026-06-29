@@ -137,3 +137,4 @@ New PHP manual is available (latest: 3.0.7). Update with `doc --update-manual`
 
 
 
+D:\xampp\php\extras\ssl\cacert.pem 

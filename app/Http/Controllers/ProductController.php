@@ -1,5 +1,5 @@
 <?php
-
+// app/http/Controller/ProductController.php
 namespace App\Http\Controllers;
 
 use App\Models\Product;
