@@ -1,117 +1,3 @@
-<!--
-// app/http/Controller/AuthController.php
-// namespace App\Http\Controllers;
-
-// use Illuminate\Http\Request;
-// use App\Models\User;
-// use Illuminate\Support\Facades\Hash;
-// use Illuminate\Support\Facades\Http;
-
-// class AuthController extends Controller
-// {
-//     /**
-//      * Handle user login and issue API token.
-//      */
-//     public function login(Request $request)
-//     {
-//         // 1. Validate the incoming input
-//         $request->validate([
-//             'email' => 'required|email',
-//             'password' => 'required',
-//         ]);
-
-//         // 2. Locate the user by email
-//         // $user = User::where('email', $request->email)->first();
-
-//         // // 3. Verify user presence and evaluate password match
-//         // if (!$user || !Hash::check($request->password, $user->password)) {
-//         //     return response()->json([
-//         //         'success' => false,
-//         //         'message' => 'Invalid email or password.'
-//         //     ], 401);
-//         // }
-
-//         // $response = Http::get
-//         $response = Http::withoutVerifying()->get
-//         ('https://6a1f10beb79eec0d6cf07a62.mockapi.io/api/watch/watchUser');
-//         if(!$response->successful()){
-
-//             return response()->json([
-//                 "success"=>false,
-//                 "message"=>"Cannot connect to user API."
-//             ],500);
-
-//         }
-
-        //$response = Http::withoutVerifying()->post(
-        //     "https://6a1f10beb79eec0d6cf07a62.mockapi.io/api/watch/watchUser",
-        //     [
-        //         // data...
-        //     ]
-        // );
-
-        // $users = $response->json();
-        // // dd($users);
-        // $user = null;
-
-        // foreach($users as $item){
-
-        //     if(
-        //         $item["email"] == $request->email &&
-        //         $item["password"] == $request->password
-        //     ){
-        //         $user = $item;
-        //         break;
-        //     }
-
-        // }
-
-        // if(!$user){
-
-        //     return response()->json([
-        //         "success"=>false,
-        //         "message"=>"Invalid Email or Password"
-        //     ],401);
-
-        // }
-
-        // // 4. Issue Sanctum text token
-        // // $token = $user->createToken('auth_token')->plainTextToken;
-        // return response()->json([
-        //     "success"=>true,
-        //     "message"=>"Login Successfully",
-        //     "user"=>$user
-        // ]);
-
-    //     // 5. Respond to frontend with token + user dashboard profiles
-    //     return response()->json([
-    //         'success' => true,
-    //         'message' => 'Logged in successfully',
-    //         'token' => $token,
-    //         'user' => [
-    //             'id' => $user->id,
-    //             'name' => $user->name,
-    //             'email' => $user->email,
-    //             'role' => $user->role ?? 'user' // Default fallback safety
-    //         ]
-    //     ], 200);
-    // }
-
-    /**
-     * Terminate session and destroy current active API token.
-     */
-//     public function logout(Request $request)
-//     {
-//         // Revokes exclusively the specific token that authorized this current request
-//         $request->user()->currentAccessToken()->delete();
-
-//         return response()->json([
-//             'success' => true,
-//             'message' => 'Logged out successfully'
-//         ], 200);
-//     }
-// }
-
 <?php
 
 namespace App\Http\Controllers;
@@ -274,3 +160,116 @@ class AuthController extends Controller
         return response()->json(['success' => true, 'message' => 'User deleted.'], 200);
     }
 }
+
+// app/http/Controller/AuthController.php
+// namespace App\Http\Controllers;
+
+// use Illuminate\Http\Request;
+// use App\Models\User;
+// use Illuminate\Support\Facades\Hash;
+// use Illuminate\Support\Facades\Http;
+
+// class AuthController extends Controller
+// {
+//     /**
+//      * Handle user login and issue API token.
+//      */
+//     public function login(Request $request)
+//     {
+//         // 1. Validate the incoming input
+//         $request->validate([
+//             'email' => 'required|email',
+//             'password' => 'required',
+//         ]);
+
+//         // 2. Locate the user by email
+//         // $user = User::where('email', $request->email)->first();
+
+//         // // 3. Verify user presence and evaluate password match
+//         // if (!$user || !Hash::check($request->password, $user->password)) {
+//         //     return response()->json([
+//         //         'success' => false,
+//         //         'message' => 'Invalid email or password.'
+//         //     ], 401);
+//         // }
+
+//         // $response = Http::get
+//         $response = Http::withoutVerifying()->get
+//         ('https://6a1f10beb79eec0d6cf07a62.mockapi.io/api/watch/watchUser');
+//         if(!$response->successful()){
+
+//             return response()->json([
+//                 "success"=>false,
+//                 "message"=>"Cannot connect to user API."
+//             ],500);
+
+//         }
+
+        //$response = Http::withoutVerifying()->post(
+        //     "https://6a1f10beb79eec0d6cf07a62.mockapi.io/api/watch/watchUser",
+        //     [
+        //         // data...
+        //     ]
+        // );
+
+        // $users = $response->json();
+        // // dd($users);
+        // $user = null;
+
+        // foreach($users as $item){
+
+        //     if(
+        //         $item["email"] == $request->email &&
+        //         $item["password"] == $request->password
+        //     ){
+        //         $user = $item;
+        //         break;
+        //     }
+
+        // }
+
+        // if(!$user){
+
+        //     return response()->json([
+        //         "success"=>false,
+        //         "message"=>"Invalid Email or Password"
+        //     ],401);
+
+        // }
+
+        // // 4. Issue Sanctum text token
+        // // $token = $user->createToken('auth_token')->plainTextToken;
+        // return response()->json([
+        //     "success"=>true,
+        //     "message"=>"Login Successfully",
+        //     "user"=>$user
+        // ]);
+
+    //     // 5. Respond to frontend with token + user dashboard profiles
+    //     return response()->json([
+    //         'success' => true,
+    //         'message' => 'Logged in successfully',
+    //         'token' => $token,
+    //         'user' => [
+    //             'id' => $user->id,
+    //             'name' => $user->name,
+    //             'email' => $user->email,
+    //             'role' => $user->role ?? 'user' // Default fallback safety
+    //         ]
+    //     ], 200);
+    // }
+
+    /**
+     * Terminate session and destroy current active API token.
+     */
+//     public function logout(Request $request)
+//     {
+//         // Revokes exclusively the specific token that authorized this current request
+//         $request->user()->currentAccessToken()->delete();
+
+//         return response()->json([
+//             'success' => true,
+//             'message' => 'Logged out successfully'
+//         ], 200);
+//     }
+// }

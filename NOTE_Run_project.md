@@ -52,3 +52,11 @@ php artisan tinker
 
 # 5. Start server
 php artisan serve
+
+<!-- -- when caches error -- -->
+# 1. Delete stale compiled views
+php artisan view:clear
+
+# 2. Also clear config/route cache to be safe
+php artisan cache:clear
+php artisan config:clear

@@ -147,7 +147,8 @@ let editingProductId = null;
 // 1. Load products from Laravel → MockAPI proxy
 async function loadProductsFromDatabase() {
     try {
-        const response = await fetch('/api/products', { headers: getAuthHeaders() });
+        // const response = await fetch('/api/products', { headers: getAuthHeaders() });
+        const response = await fetch('/api/products');
         const data = await response.json();
 
         if (data.success) {
@@ -277,7 +278,11 @@ async function saveProduct(btn) {
     try {
         const response = await fetch(url, {
             method,
-            headers: getAuthHeaders(),
+            // headers: getAuthHeaders(),
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            },
             body: JSON.stringify(payload)
         });
 
@@ -304,7 +309,10 @@ async function deleteProduct(id, btn) {
     try {
         const response = await fetch(`/api/product/${id}`, {
             method: 'DELETE',
-            headers: getAuthHeaders()
+            // headers: getAuthHeaders()
+            headers: {
+                "Accept": "application/json"
+            }
         });
 
         if (response.ok) {

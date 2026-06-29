@@ -45,24 +45,7 @@ function saveNewProduct() {
     <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
 </head>
 <body>
-<!-- 
-    <div id="toastContainer" class="toast-container"></div>
-    
-    <div id="authScreen">
-        <div id="loginView"></div>
-        <div id="registerView" style="display:block"></div>
-        <div id="forgotView" style="display:block"></div>
-    </div>
 
-    <div id="dashScreen" style="display:block;">
-        <div id="mainContent"></div>
-    </div> --> 
-    <!-- <script src="{{ asset('js/dashboard.js') }}"></script> -->
-    <!--<script src="{{ asset('js/utils.js') }}"></script>
-    <script src="{{ asset('js/auth.js') }}"></script>
-    <script src="{{ asset('js/charts.js') }}"></script>
-    <script src="{{ asset('js/products.js') }}"></script> -->
-    
     <!-- AUTH SCREEN -->
     <div id="authScreen" class="auth-screen">
     <div class="auth-left">
@@ -277,6 +260,25 @@ function saveNewProduct() {
     <script src="{{ asset('js/products.js') }}"></script>
  </body>
 </html>
+
+<!-- 
+    <div id="toastContainer" class="toast-container"></div>
+    
+    <div id="authScreen">
+        <div id="loginView"></div>
+        <div id="registerView" style="display:block"></div>
+        <div id="forgotView" style="display:block"></div>
+    </div>
+
+    <div id="dashScreen" style="display:block;">
+        <div id="mainContent"></div>
+    </div> --> 
+    <!-- <script src="{{ asset('js/dashboard.js') }}"></script> -->
+    <!--<script src="{{ asset('js/utils.js') }}"></script>
+    <script src="{{ asset('js/auth.js') }}"></script>
+    <script src="{{ asset('js/charts.js') }}"></script>
+    <script src="{{ asset('js/products.js') }}"></script> -->
+
     <!-- <script> 
         // Connects UI to GET http://127.0.0.1:8000/api/products
         function fetchAllProducts() {

@@ -1,5 +1,6 @@
 --create folder Middleware
 $ php artisan make:middleware Middleware
+$ php artisan make:controller ProductController
 
 --create file in folder Middleware
 $ php artisan make:middleware RoleManager
@@ -135,6 +136,22 @@ New PHP manual is available (latest: 3.0.7). Update with `doc --update-manual`
     id: 1,
   }
 
-
-
 D:\xampp\php\extras\ssl\cacert.pem 
+
+
+The full error from Network (Response tab for the 401 request).
+The output of:
+php artisan route:list
+
+php artisan optimize:clear
+
+USER@DESKTOP-M1TVSAR MINGW64 /d/ETEC/11_1_30mns/etec-final-project-laravel (main)
+$ php artisan optimize:clear
+
+   INFO  Clearing cached bootstrap files.
+
+  config ............................................................................................................................. 124.65ms DONE
+  cache .............................................................................................................................. 367.20ms DONE
+  compiled ............................................................................................................................. 1.67ms DONE
+  events ............................................................................................................................... 0.47ms DONE
+  routes ............................................................................................................................... 0.39ms DONE

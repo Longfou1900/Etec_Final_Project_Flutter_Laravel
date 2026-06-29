@@ -22,9 +22,9 @@ Route::put('/users/{id}',    [AuthController::class, 'updateUser']);
 Route::delete('/users/{id}', [AuthController::class, 'deleteUser']);
  
 // ---- PRODUCTS (proxy to MockAPI) ----
-Route::get('/products',        [ProductController::class, 'getProduct']);
-Route::post('/product',        [ProductController::class, 'insertProduct']);
-Route::put('/product/{id}',    [ProductController::class, 'update']);
+Route::get('/products', [ProductController::class, 'getProduct']);
+Route::post('/product', [ProductController::class, 'insertProduct']);
+Route::put('/product/{id}', [ProductController::class, 'updateProduct']);
 Route::delete('/product/{id}', [ProductController::class, 'deleteProduct']);
  
 
