@@ -1,1118 +1,362 @@
-//resoucres/js/dashboard.js
 // ---- STATE ----
 let currentUser = null;
-let isDark = true;
-let products = [
-    {
-        id: "1",
-        name: "Zinvo Blade Cobalt V2",
-        img: "https://klassywatches.com/cdn/shop/files/Cobalt_02-2_1000x.png?v=1731966652",
-        price: 450,
-        qty: 85,
-        rating: 72,
-        company: "ZINVO",
-        strap: "Stainless Steel",
-        warranty: 73,
-        discount: 21,
-        description:
-            "Featuring a brushed 316L stainless steel case and a deep blue color combination, along with ZINVO's unique 1-second-spin turbine dial.",
-        country: "USA",
-        saler: "Mike R.",
-        shopName: "ChronoStore",
-    },
-    {
-        id: "2",
-        name: "Seiko Presage SSA405",
-        img: "https://images.squarespace-cdn.com/content/v1/5eb7ab75c3b77950b9c43e47/1594413399803-YHFZDDXO1EM7IQHPBAWZ/seiko-presage-ssa405j1.jpg",
-        price: 890,
-        qty: 32,
-        rating: 88,
-        company: "Seiko",
-        strap: "Leather",
-        warranty: 24,
-        discount: 5,
-        description: "Japanese masterpiece with stunning enamel dial.",
-    },
-    {
-        id: "3",
-        name: "Orient Star Classic",
-        img: "https://orient-watch.com/img/media/catalog/product/W/Z/WZ0011DL.jpg",
-        price: 380,
-        qty: 54,
-        rating: 75,
-        company: "Orient",
-        strap: "Leather",
-        warranty: 24,
-        discount: 10,
-        description: "Classic elegance with hand-winding movement.",
-    },
-    {
-        id: "4",
-        name: "Citizen Promaster Dive",
-        img: "https://citizenwatch.com/medias/BN0150-28E_1.jpg",
-        price: 250,
-        qty: 120,
-        rating: 82,
-        company: "Citizen",
-        strap: "Rubber",
-        warranty: 36,
-        discount: 0,
-        description: "200m water resistant professional diver.",
-    },
-];
-let users = [
-    {
-        id: "1",
-        username: "Ah Boto",
-        email: "foufou9173@gmail.com",
-        role: "admin",
-        location: "Phnom Penh City",
-        sex: "m",
-        createdAt: 1780771641,
-        banned: false,
-        image: "AB",
-        phone: 12346789,
-        bio: "Store Admin. Managing products and users.",
-    },
-    {
-        id: "2",
-        username: "Dey Vavi",
-        email: "vavi123@gmail.com",
-        role: "user",
-        location: "Siem Reap",
-        sex: "f",
-        createdAt: 1780771581,
-        banned: false,
-        image: "DV",
-        phone: 123456789,
-        bio: "Watch enthusiast and collector.",
-    },
-    {
-        id: "3",
-        username: "Chan Sophea",
-        email: "sophea@gmail.com",
-        role: "user",
-        location: "Battambang",
-        sex: "f",
-        createdAt: 1780760000,
-        banned: false,
-        image: "CS",
-        phone: 123111222,
-        bio: "Fashion blogger covering luxury watches.",
-    },
-];
-let orders = [
-    {
-        id: "ORD001",
-        user: "Dey Vavi",
-        product: "Zinvo Blade Cobalt V2",
-        price: 450,
-        date: "2025-01-15",
-        status: "delivered",
-        location: "Siem Reap",
-        tracking: "TRK2025001",
-    },
-    {
-        id: "ORD002",
-        user: "Chan Sophea",
-        product: "Seiko Presage SSA405",
-        price: 890,
-        date: "2025-01-18",
-        status: "shipping",
-        location: "Battambang",
-        tracking: "TRK2025002",
-    },
-    {
-        id: "ORD003",
-        user: "Dey Vavi",
-        product: "Orient Star Classic",
-        price: 380,
-        date: "2025-01-20",
-        status: "processing",
-        location: "Siem Reap",
-        tracking: "TRK2025003",
-    },
-    {
-        id: "ORD004",
-        user: "Chan Sophea",
-        product: "Citizen Promaster Dive",
-        price: 250,
-        date: "2025-01-22",
-        status: "pending",
-        location: "Phnom Penh",
-        tracking: "TRK2025004",
-    },
-];
-let editingProduct = null;
-let forgotEmailTarget = "";
-let charts = {};
+// let isDark = true;
+// let products = [];
+// let editingProduct = null;
+let users = [];
+let orders = [];
+// let forgotEmailTarget = '';
+// let charts = {};
+// const API_BASE = '/api';
+
+// ---- API HELPERS ----
+// async function apiCall(endpoint, options = {}) {
+//     const token = localStorage.getItem('auth_token');
+//     const headers = {
+//         'Content-Type': 'application/json',
+//         'Accept': 'application/json',
+//         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '',
+//         ...options.headers
+//     };
+    
+//     if (token) {
+//         headers['Authorization'] = `Bearer ${token}`;
+//     }
+
+//     const response = await fetch(`${API_BASE}${endpoint}`, {
+//         ...options,
+//         headers
+//     });
+
+//     const data = await response.json();
+    
+//     if (!response.ok) {
+//         throw new Error(data.message || 'API request failed');
+//     }
+    
+//     return data;
+// }
+
+// ---- LOAD DATA ----
+// async function loadProducts() {
+//     try {
+//         const result = await apiCall('/products');
+//         if (result.success) {
+//             products = result.data || [];
+//             return products;
+//         }
+//         return [];
+//     } catch (error) {
+//         console.error('Error loading products:', error);
+//         showToast('Failed to load products', 'error');
+//         return [];
+//     }
+// }
+
+
+
+// Generate orders from products (mock for demo)
+// function generateOrders() {
+//     orders = [];
+//     const statuses = ['delivered', 'shipping', 'processing', 'pending'];
+//     const userNames = users.map(u => u.username);
+    
+//     products.forEach((p, index) => {
+//         if (index % 2 === 0 && userNames.length > 0) {
+//             orders.push({
+//                 id: `ORD${String(index + 1).padStart(4, '0')}`,
+//                 user: userNames[index % userNames.length] || 'Unknown',
+//                 product: p.name || 'Unknown Product',
+//                 price: parseFloat(p.price) || 0,
+//                 date: new Date(Date.now() - index * 86400000).toISOString().split('T')[0],
+//                 status: statuses[index % statuses.length],
+//                 location: p.location || 'Unknown',
+//                 tracking: `TRK${String(index + 1).padStart(7, '0')}`
+//             });
+//         }
+//     });
+    
+//     if (orders.length === 0) {
+//         // Fallback orders
+//         orders = [
+//             { id: 'ORD001', user: 'Dey Vavi', product: 'Zinvo Blade Cobalt V2', price: 450, date: '2025-01-15', status: 'delivered', location: 'Siem Reap', tracking: 'TRK2025001' },
+//             { id: 'ORD002', user: 'Chan Sophea', product: 'Seiko Presage SSA405', price: 890, date: '2025-01-18', status: 'shipping', location: 'Battambang', tracking: 'TRK2025002' },
+//             { id: 'ORD003', user: 'Dey Vavi', product: 'Orient Star Classic', price: 380, date: '2025-01-20', status: 'processing', location: 'Siem Reap', tracking: 'TRK2025003' },
+//             { id: 'ORD004', user: 'Chan Sophea', product: 'Citizen Promaster Dive', price: 250, date: '2025-01-22', status: 'pending', location: 'Phnom Penh', tracking: 'TRK2025004' },
+//         ];
+//     }
+//     return orders;
+// }
 
 // ---- AUTH HELPERS ----
-function togglePw(inputId, iconId) {
-    const inp = document.getElementById(inputId);
-    const ico = document.getElementById(iconId);
-    if (inp.type === "password") {
-        inp.type = "text";
-        ico.className = "ti ti-eye-off input-icon";
-    } else {
-        inp.type = "password";
-        ico.className = "ti ti-eye input-icon";
-    }
-}
-function showView(v) {
-    ["loginView", "registerView", "forgotView"].forEach((id) => {
-        const el = document.getElementById(id);
-        if (el) el.style.display = "none";
-    });
-    const target = document.getElementById(v);
-    if (target) target.style.display = "block";
-    // Reset forgot steps
-    if (v === "forgotView") {
-        document
-            .querySelectorAll(".forgot-step")
-            .forEach((s) => s.classList.remove("active"));
-        document.getElementById("forgotStep1").classList.add("active");
-    }
-}
-function showBtn(btn, loading) {
-    btn.classList.toggle("loading", loading);
-}
-function doLogin(btn) {
-    const u = document.getElementById("loginUser").value;
-    const p = document.getElementById("loginPass").value;
-    showBtn(btn, true);
-    setTimeout(() => {
-        const found = users.find((x) => x.username === u);
-        if (found && p.length >= 4) {
-            currentUser = found;
-            showDashboard();
-        } else {
-            showToast("Invalid username or password", "error");
-        }
-        showBtn(btn, false);
-    }, 1200);
-}
-function doSocialLogin(provider, btn) {
-    showBtn(btn, true);
-    setTimeout(() => {
-        currentUser = users[0];
-        showDashboard();
-        showBtn(btn, false);
-    }, 1500);
-}
-function doRegister(btn) {
-    const u = document.getElementById("regUser").value;
-    const e = document.getElementById("regEmail").value;
-    const p = document.getElementById("regPass").value;
-    const r = document.getElementById("regRole").value;
-    if (!u || !e || !p) {
-        showToast("Please fill all fields", "error");
-        return;
-    }
-    showBtn(btn, true);
-    setTimeout(() => {
-        const code = Math.floor(100000 + Math.random() * 900000).toString();
-        const newUser = {
-            id: Date.now().toString(),
-            username: u,
-            email: e,
-            role: r,
-            location: "Unknown",
-            sex: "m",
-            createdAt: Math.floor(Date.now() / 1000),
-            banned: false,
-            image: u.substring(0, 2).toUpperCase(),
-            phone: 0,
-            bio: "",
-            code,
-        };
-        users.push(newUser);
-        showToast(
-            "Account created! Code: " + code + " (sent to email)",
-            "success",
-        );
-        setTimeout(() => showView("loginView"), 2000);
-        showBtn(btn, false);
-    }, 1500);
-}
-function sendForgotCode(btn) {
-    const email = document.getElementById("forgotEmail").value;
-    if (!email) {
-        showToast("Enter your email", "error");
-        return;
-    }
-    showBtn(btn, true);
-    forgotEmailTarget = email;
-    setTimeout(() => {
-        document.getElementById("forgotEmailDisplay").textContent = email;
-        document.getElementById("forgotStep1").classList.remove("active");
-        document.getElementById("forgotStep2").classList.add("active");
-        showToast("Code sent to " + email + " (check spam)", "info");
-        showBtn(btn, false);
-    }, 1500);
-}
-function codeNext(inp, idx) {
-    if (inp.value.length === 1 && idx < 5) {
-        document.getElementById("c" + (idx + 1)).focus();
-    }
-}
-function verifyCode(btn) {
-    const code = [0, 1, 2, 3, 4, 5]
-        .map((i) => document.getElementById("c" + i).value)
-        .join("");
-    showBtn(btn, true);
-    setTimeout(() => {
-        const u = users.find((x) => x.email === forgotEmailTarget);
-        if (u && u.code === code) {
-            document.getElementById("forgotStep2").classList.remove("active");
-            document.getElementById("forgotStep3").classList.add("active");
-            showToast("Code verified!", "success");
-        } else if (code === "123456") {
-            document.getElementById("forgotStep2").classList.remove("active");
-            document.getElementById("forgotStep3").classList.add("active");
-            showToast("Code verified!", "success");
-        } else {
-            showToast("Wrong code. Try 123456 for demo", "error");
-        }
-        showBtn(btn, false);
-    }, 1000);
-}
-function resetPassword(btn) {
-    const np = document.getElementById("newPass").value;
-    const cp = document.getElementById("confirmPass").value;
-    if (!np || np !== cp) {
-        showToast("Passwords do not match", "error");
-        return;
-    }
-    showBtn(btn, true);
-    setTimeout(() => {
-        showToast("Password updated successfully!", "success");
-        setTimeout(() => showView("loginView"), 1500);
-        showBtn(btn, false);
-    }, 1200);
-}
 
-// ---- DASHBOARD ----
-function showDashboard() {
-    document.getElementById("authScreen").style.display = "none";
-    document.getElementById("dashScreen").style.display = "flex";
-    document.getElementById("topbarName").textContent = currentUser.username;
-    document.getElementById("topbarRole").textContent =
-        currentUser.role.charAt(0).toUpperCase() + currentUser.role.slice(1);
-    document.getElementById("topbarAvatar").textContent = currentUser.image;
-    // Hide admin-only items for users
-    if (currentUser.role !== "admin") {
-        document.querySelectorAll(".admin-only").forEach((el) => {
-            el.style.display = "none";
-        });
-    } else {
-        document.querySelectorAll(".admin-only").forEach((el) => {
-            el.style.display = "flex";
-        });
-    }
-    showPage("analytics", document.querySelector(".nav-item"));
-}
+// function showBtn(btn, loading) {
+//     btn.classList.toggle('loading', loading);
+// }
 
-function showPage(page, el) {
-    document
-        .querySelectorAll(".nav-item")
-        .forEach((n) => n.classList.remove("active"));
-    if (el) el.classList.add("active");
-    // Destroy all charts
-    Object.values(charts).forEach((c) => {
-        try {
-            c.destroy();
-        } catch (e) {}
-    });
-    charts = {};
-    const titles = {
-        analytics: "All Products Analytics",
-        orders: "Order Analysis",
-        sold: "Product Sold",
-        crud: "Product CRUD",
-        roles: "User Roles & Management",
-        profile: "My Profile",
-    };
-    document.getElementById("pageTitle").textContent = titles[page] || page;
-    const c = document.getElementById("mainContent");
-    c.innerHTML = "";
-    if (page === "analytics") renderAnalytics(c);
-    else if (page === "orders") renderOrders(c);
-    else if (page === "sold") renderSold(c);
-    else if (page === "crud") renderCrud(c);
-    else if (page === "roles") renderRoles(c);
-    else if (page === "profile") renderProfile(c);
-}
 
-// ---- ANALYTICS PAGE ----
-function renderAnalytics(c) {
-    const totalRevenue = products.reduce((a, p) => a + p.price * p.qty, 0);
-    const totalSold = orders.length;
-    c.innerHTML = `
-  <div class="page-view">
-  <div class="grid-4" style="margin-bottom:14px">
-    <div class="gcard" style="background:var(--grad1)">
-      <div class="gcard-lbl">Total Revenue</div>
-      <div class="gcard-val">$${(totalRevenue / 1000).toFixed(1)}K</div>
-      <span class="stat-chip chip-up" style="background:rgba(255,255,255,0.2);color:#fff">↑ 18.3%</span>
-    </div>
-    <div class="gcard" style="background:var(--grad3)">
-      <div class="gcard-lbl">Products</div>
-      <div class="gcard-val">${products.length}</div>
-      <span class="stat-chip" style="background:rgba(255,255,255,0.2);color:#fff">↑ 2 new</span>
-    </div>
-    <div class="gcard" style="background:var(--grad5)">
-      <div class="gcard-lbl">Orders Placed</div>
-      <div class="gcard-val">${orders.length}</div>
-      <span class="stat-chip" style="background:rgba(255,255,255,0.2);color:#fff">↑ 12%</span>
-    </div>
-    <div class="gcard" style="background:var(--grad4)">
-      <div class="gcard-lbl">Avg Rating</div>
-      <div class="gcard-val">${(products.reduce((a, p) => a + p.rating, 0) / products.length).toFixed(0)}%</div>
-      <span class="stat-chip" style="background:rgba(255,255,255,0.2);color:#fff">↑ 3pts</span>
-    </div>
-  </div>
 
-  <div class="grid-2" style="margin-bottom:14px">
-    <div class="card">
-      <div class="card-title">Monthly Sales Revenue</div>
-      <div class="chart-wrap" style="height:220px"><canvas id="revenueChart"></canvas></div>
-    </div>
-    <div class="card">
-      <div class="card-title">Customer Demographics</div>
-      <div class="grid-2" style="margin-bottom:12px">
-        <div class="mini-stat">
-          <div><div class="mini-stat-val">62%</div><div class="mini-stat-lbl">Male buyers</div></div>
-          <span style="font-size:22px">👨</span>
-        </div>
-        <div class="mini-stat">
-          <div><div class="mini-stat-val">38%</div><div class="mini-stat-lbl">Female buyers</div></div>
-          <span style="font-size:22px">👩</span>
-        </div>
-      </div>
-      <div class="gender-bar">
-        <div style="width:62%;background:var(--blue);border-radius:4px 0 0 4px"></div>
-        <div style="width:38%;background:var(--pink);border-radius:0 4px 4px 0"></div>
-      </div>
-      <div class="chart-wrap" style="height:150px;margin-top:12px"><canvas id="demoChart"></canvas></div>
-    </div>
-  </div>
 
-  <div class="grid-2" style="margin-bottom:14px">
-    <div class="card">
-      <div class="card-title">Top Selling Watches</div>
-      ${products
-          .sort((a, b) => b.rating - a.rating)
-          .map(
-              (p, i) => `
-      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
-        <div style="width:28px;height:28px;border-radius:50%;background:var(--grad${(i % 5) + 1});display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;flex-shrink:0">${i + 1}</div>
-        <img src="${p.img}" style="width:36px;height:36px;border-radius:8px;object-fit:cover;background:var(--bg3);flex-shrink:0" onerror="this.style.background='var(--bg4)'">
-        <div style="flex:1;min-width:0">
-          <div style="font-size:12px;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${p.name}</div>
-          <div class="progress-bar"><div class="progress-fill" style="width:${p.rating}%;background:var(--grad1)"></div></div>
-        </div>
-        <div style="font-size:13px;font-weight:700;color:var(--accent2);flex-shrink:0">$${p.price}</div>
-      </div>`,
-          )
-          .join("")}
-    </div>
-    <div class="card">
-      <div class="card-title">Product Category Breakdown</div>
-      <div class="chart-wrap" style="height:220px"><canvas id="catChart"></canvas></div>
-    </div>
-  </div>
 
-  <div class="card">
-    <div class="card-title">All Products Inventory</div>
-    <table>
-      <thead><tr><th>Watch</th><th>Company</th><th>Price</th><th>Stock</th><th>Rating</th><th>Discount</th><th>Revenue Est.</th></tr></thead>
-      <tbody>
-        ${products
-            .map(
-                (p) => `<tr>
-          <td><div style="display:flex;align-items:center;gap:8px"><img src="${p.img}" style="width:32px;height:32px;border-radius:6px;object-fit:cover;background:var(--bg3)" onerror="this.style.background='var(--bg4)'"><div style="font-size:12px;font-weight:600;color:var(--text)">${p.name}</div></div></td>
-          <td>${p.company || "—"}</td>
-          <td style="color:var(--accent2);font-weight:600">$${p.price}</td>
-          <td><span class="badge ${p.qty > 50 ? "badge-active" : "badge-pending"}">${p.qty} units</span></td>
-          <td><span class="stat-chip chip-up">${p.rating}%</span></td>
-          <td><span class="tag tag-warn">${p.discount}% off</span></td>
-          <td style="font-weight:600;color:var(--green)">$${((p.price * p.qty) / 1000).toFixed(1)}K</td>
-        </tr>`,
-            )
-            .join("")}
-      </tbody>
-    </table>
-  </div>
-  </div>`;
-
-    setTimeout(() => {
-        // Revenue chart
-        const rCtx = document.getElementById("revenueChart");
-        if (rCtx) {
-            charts.revenue = new Chart(rCtx, {
-                type: "line",
-                data: {
-                    labels: [
-                        "Jan",
-                        "Feb",
-                        "Mar",
-                        "Apr",
-                        "May",
-                        "Jun",
-                        "Jul",
-                        "Aug",
-                    ],
-                    datasets: [
-                        {
-                            label: "Revenue",
-                            data: [
-                                18000, 24000, 19000, 32000, 28000, 40000, 35000,
-                                45000,
-                            ],
-                            borderColor: "#7c6af7",
-                            backgroundColor: "rgba(124,106,247,0.08)",
-                            tension: 0.4,
-                            fill: true,
-                            pointBackgroundColor: "#7c6af7",
-                            pointRadius: 4,
-                        },
-                        {
-                            label: "Orders",
-                            data: [
-                                12000, 18000, 15000, 22000, 20000, 28000, 25000,
-                                32000,
-                            ],
-                            borderColor: "#f472b6",
-                            backgroundColor: "rgba(244,114,182,0.08)",
-                            tension: 0.4,
-                            fill: true,
-                            pointBackgroundColor: "#f472b6",
-                            pointRadius: 4,
-                        },
-                    ],
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: { legend: { display: false } },
-                    scales: {
-                        x: {
-                            grid: { color: "rgba(120,130,255,0.06)" },
-                            ticks: { color: "#6b75b8", font: { size: 10 } },
-                        },
-                        y: {
-                            grid: { color: "rgba(120,130,255,0.06)" },
-                            ticks: {
-                                color: "#6b75b8",
-                                font: { size: 10 },
-                                callback: (v) => "$" + v / 1000 + "K",
-                            },
-                        },
-                    },
-                },
-            });
-        }
-        // Demo chart
-        const dCtx = document.getElementById("demoChart");
-        if (dCtx) {
-            charts.demo = new Chart(dCtx, {
-                type: "bar",
-                data: {
-                    labels: ["18-24", "25-34", "35-44", "45-54", "55+"],
-                    datasets: [
-                        {
-                            label: "Male",
-                            data: [15, 28, 20, 12, 8],
-                            backgroundColor: "rgba(96,165,250,0.7)",
-                        },
-                        {
-                            label: "Female",
-                            data: [8, 18, 12, 10, 6],
-                            backgroundColor: "rgba(244,114,182,0.7)",
-                        },
-                    ],
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: { legend: { display: false } },
-                    scales: {
-                        x: {
-                            grid: { display: false },
-                            ticks: { color: "#6b75b8", font: { size: 10 } },
-                        },
-                        y: {
-                            grid: { color: "rgba(120,130,255,0.06)" },
-                            ticks: { color: "#6b75b8", font: { size: 10 } },
-                        },
-                    },
-                },
-            });
-        }
-        // Category chart
-        const cCtx = document.getElementById("catChart");
-        if (cCtx) {
-            charts.cat = new Chart(cCtx, {
-                type: "doughnut",
-                data: {
-                    labels: ["Automatic", "Dive", "Dress", "Sport", "Luxury"],
-                    datasets: [
-                        {
-                            data: [35, 20, 18, 15, 12],
-                            backgroundColor: [
-                                "#7c6af7",
-                                "#60a5fa",
-                                "#f472b6",
-                                "#34d399",
-                                "#f59e0b",
-                            ],
-                            borderWidth: 0,
-                            hoverOffset: 4,
-                        },
-                    ],
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    cutout: "65%",
-                    plugins: {
-                        legend: {
-                            position: "right",
-                            labels: {
-                                color: "#9ea8d8",
-                                font: { size: 11 },
-                                padding: 10,
-                                boxWidth: 10,
-                            },
-                        },
-                    },
-                },
-            });
-        }
-    }, 100);
-}
-
-// ---- ORDERS PAGE ----
-function renderOrders(c) {
-    const statusMap = {
-        delivered: { cls: "badge-active", icon: "ti-circle-check", steps: 4 },
-        shipping: { cls: "badge-user", icon: "ti-truck", steps: 3 },
-        processing: { cls: "badge-warn", icon: "ti-loader", steps: 2 },
-        pending: { cls: "badge-pending", icon: "ti-clock", steps: 1 },
-    };
-    c.innerHTML = `
-  <div class="page-view">
-  <div class="grid-4" style="margin-bottom:14px">
-    <div class="mini-stat"><div><div class="mini-stat-val">${orders.length}</div><div class="mini-stat-lbl">Total Orders</div></div><i class="ti ti-shopping-cart" style="font-size:24px;color:var(--accent)"></i></div>
-    <div class="mini-stat"><div><div class="mini-stat-val">${orders.filter((o) => o.status === "delivered").length}</div><div class="mini-stat-lbl">Delivered</div></div><i class="ti ti-circle-check" style="font-size:24px;color:var(--green)"></i></div>
-    <div class="mini-stat"><div><div class="mini-stat-val">${orders.filter((o) => o.status === "shipping").length}</div><div class="mini-stat-lbl">Shipping</div></div><i class="ti ti-truck" style="font-size:24px;color:var(--blue)"></i></div>
-    <div class="mini-stat"><div><div class="mini-stat-val">$${orders.reduce((a, o) => a + o.price, 0)}</div><div class="mini-stat-lbl">Total Value</div></div><i class="ti ti-currency-dollar" style="font-size:24px;color:var(--gold)"></i></div>
-  </div>
-
-  <div class="grid-2" style="margin-bottom:14px">
-    <div class="card">
-      <div class="card-title">Order Status Distribution</div>
-      <div class="chart-wrap" style="height:200px"><canvas id="orderStatusChart"></canvas></div>
-    </div>
-    <div class="card">
-      <div class="card-title">Order Tracking Details</div>
-      ${orders
-          .slice(0, 2)
-          .map((o) => {
-              const sm = statusMap[o.status];
-              return `<div style="margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid var(--border)">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-            <div><div style="font-size:13px;font-weight:600;color:var(--text)">${o.id} — ${o.product.split(" ").slice(0, 3).join(" ")}</div>
-            <div style="font-size:11px;color:var(--text3)">${o.user} · ${o.location}</div></div>
-            <span class="badge ${sm.cls}">${o.status}</span>
-          </div>
-          <div style="display:flex;gap:0">
-            ${["Order Placed", "Processing", "Shipped", "Delivered"]
-                .map(
-                    (step, i) => `
-            <div style="flex:1;text-align:center;position:relative">
-              <div style="width:20px;height:20px;border-radius:50%;border:2px solid ${i < sm.steps ? "var(--green)" : "var(--border)"};background:${i < sm.steps ? "rgba(52,211,153,0.2)" : "var(--bg3)"};display:flex;align-items:center;justify-content:center;margin:0 auto;font-size:10px;color:${i < sm.steps ? "var(--green)" : "var(--text3)"}">
-                ${i < sm.steps ? "✓" : i + 1}
-              </div>
-              <div style="font-size:9px;color:var(--text3);margin-top:3px">${step}</div>
-              ${i < 3 ? `<div style="position:absolute;top:10px;left:60%;width:80%;height:1px;background:${i < sm.steps - 1 ? "var(--green)" : "var(--border)"}"></div>` : ""}
-            </div>`,
-                )
-                .join("")}
-          </div>
-          <div style="font-size:11px;color:var(--text3);margin-top:8px">Tracking: <span style="color:var(--accent2)">${o.tracking}</span></div>
-        </div>`;
-          })
-          .join("")}
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="card-title">All Orders</div>
-    <table>
-      <thead><tr><th>Order ID</th><th>Customer</th><th>Product</th><th>Price</th><th>Date</th><th>Location</th><th>Tracking</th><th>Status</th></tr></thead>
-      <tbody>
-        ${orders
-            .map((o) => {
-                const sm = statusMap[o.status] || { cls: "badge-user" };
-                return `<tr>
-            <td style="font-weight:600;color:var(--accent2)">${o.id}</td>
-            <td>${o.user}</td>
-            <td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${o.product}</td>
-            <td style="color:var(--green);font-weight:600">$${o.price}</td>
-            <td>${o.date}</td>
-            <td><i class="ti ti-map-pin" style="font-size:12px"></i> ${o.location}</td>
-            <td style="color:var(--text3);font-size:11px">${o.tracking}</td>
-            <td><span class="badge ${sm.cls}">${o.status}</span></td>
-          </tr>`;
-            })
-            .join("")}
-      </tbody>
-    </table>
-  </div>
-  </div>`;
-    setTimeout(() => {
-        const ctx = document.getElementById("orderStatusChart");
-        if (ctx) {
-            const statusCounts = [
-                "delivered",
-                "shipping",
-                "processing",
-                "pending",
-            ].map((s) => orders.filter((o) => o.status === s).length);
-            charts.orderStatus = new Chart(ctx, {
-                type: "doughnut",
-                data: {
-                    labels: ["Delivered", "Shipping", "Processing", "Pending"],
-                    datasets: [
-                        {
-                            data: statusCounts,
-                            backgroundColor: [
-                                "#34d399",
-                                "#60a5fa",
-                                "#f59e0b",
-                                "#f87171",
-                            ],
-                            borderWidth: 0,
-                        },
-                    ],
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    cutout: "60%",
-                    plugins: {
-                        legend: {
-                            position: "right",
-                            labels: {
-                                color: "#9ea8d8",
-                                font: { size: 11 },
-                                boxWidth: 10,
-                                padding: 8,
-                            },
-                        },
-                    },
-                },
-            });
-        }
-    }, 100);
-}
-
-// ---- SOLD PAGE ----
-function renderSold(c) {
-    c.innerHTML = `
-  <div class="page-view">
-  <div class="grid-4" style="margin-bottom:14px">
-    <div class="mini-stat"><div><div class="mini-stat-val">${orders.length}</div><div class="mini-stat-lbl">Items Sold</div></div><i class="ti ti-receipt-2" style="font-size:22px;color:var(--accent)"></i></div>
-    <div class="mini-stat"><div><div class="mini-stat-val">$${orders.reduce((a, o) => a + o.price, 0).toLocaleString()}</div><div class="mini-stat-lbl">Total Revenue</div></div><i class="ti ti-currency-dollar" style="font-size:22px;color:var(--green)"></i></div>
-    <div class="mini-stat"><div><div class="mini-stat-val">$${(orders.reduce((a, o) => a + o.price, 0) / orders.length).toFixed(0)}</div><div class="mini-stat-lbl">Avg Sale Price</div></div><i class="ti ti-chart-line" style="font-size:22px;color:var(--gold)"></i></div>
-    <div class="mini-stat"><div><div class="mini-stat-val">${[...new Set(orders.map((o) => o.user))].length}</div><div class="mini-stat-lbl">Unique Buyers</div></div><i class="ti ti-users" style="font-size:22px;color:var(--pink)"></i></div>
-  </div>
-  <div class="card">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
-      <div class="card-title" style="margin:0">Purchase History</div>
-      <div class="search-box" style="width:200px"><i class="ti ti-search" style="font-size:14px;color:var(--text3)"></i><input placeholder="Search..." style="width:140px;background:none;border:none;outline:none;font-size:12px;color:var(--text);font-family:var(--font)" oninput="filterSold(this.value)"></div>
-    </div>
-    <table id="soldTable">
-      <thead><tr><th>#</th><th>Buyer</th><th>Product</th><th>Price</th><th>Date</th><th>Status</th></tr></thead>
-      <tbody id="soldBody">
-        ${orders
-            .map(
-                (o, i) => `<tr>
-          <td style="color:var(--text3);font-size:11px">${i + 1}</td>
-          <td><div style="display:flex;align-items:center;gap:8px">
-            <div style="width:28px;height:28px;border-radius:50%;background:var(--grad1);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff">${o.user.substring(0, 2).toUpperCase()}</div>
-            <span style="font-weight:500;color:var(--text)">${o.user}</span>
-          </div></td>
-          <td style="color:var(--text2)">${o.product}</td>
-          <td style="color:var(--accent2);font-weight:700">$${o.price}</td>
-          <td style="color:var(--text3)">${o.date}</td>
-          <td><span class="badge ${o.status === "delivered" ? "badge-active" : o.status === "shipping" ? "badge-user" : "badge-pending"}">${o.status}</span></td>
-        </tr>`,
-            )
-            .join("")}
-      </tbody>
-    </table>
-  </div>
-  </div>`;
-}
-function filterSold(q) {
-    const rows = document.querySelectorAll("#soldBody tr");
-    rows.forEach((r) => {
-        r.style.display = r.textContent.toLowerCase().includes(q.toLowerCase())
-            ? ""
-            : "none";
-    });
-}
 
 // ---- CRUD PAGE ----
-function renderCrud(c) {
-    c.innerHTML = `
-  <div class="page-view">
-  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
-    <div>
-      <div style="font-size:18px;font-weight:700;color:var(--text)">Product Management</div>
-      <div style="font-size:12px;color:var(--text3);margin-top:2px">${products.length} products in inventory</div>
-    </div>
-    ${currentUser && currentUser.role === "admin" ? `<button class="btn btn-primary" onclick="openProductModal(null)"><i class="ti ti-plus"></i><span class="btn-text">Add Product</span></button>` : ""}
-  </div>
-  <div id="crudGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px"></div>
-  </div>`;
-    renderCrudGrid();
-}
-function renderCrudGrid() {
-    const grid = document.getElementById("crudGrid");
-    if (!grid) return;
-    grid.innerHTML = products
-        .map(
-            (p) => `
-  <div class="watch-card">
-    <img src="${p.img}" class="watch-img" onerror="this.style.background='linear-gradient(135deg,var(--bg3),var(--bg4))'" alt="${p.name}">
-    <div class="watch-body">
-      <div class="watch-name">${p.name}</div>
-      <div class="watch-price">$${p.price}</div>
-      <div class="watch-meta">${p.company || "—"} · Stock: ${p.qty} · ${p.strap || "—"}</div>
-      <div class="watch-meta" style="margin-top:4px">
-        <span class="tag tag-up" style="margin-right:4px">${p.rating}% rating</span>
-        ${p.discount ? `<span class="tag tag-warn">${p.discount}% off</span>` : ""}
-      </div>
-      ${
-          currentUser && currentUser.role === "admin"
-              ? `
-      <div style="display:flex;gap:6px;margin-top:10px">
-        <button class="btn btn-ghost btn-sm" style="flex:1" onclick="openProductModal('${p.id}')"><i class="ti ti-edit"></i> Edit</button>
-        <button class="btn btn-danger btn-sm btn-icon" onclick="deleteProduct('${p.id}',this)"><i class="ti ti-trash"></i></button>
-      </div>`
-              : `<div style="margin-top:10px"><button class="btn btn-primary btn-sm" style="width:100%"><i class="ti ti-plus"></i> List Product</button></div>`
-      }
-    </div>
-  </div>`,
-        )
-        .join("");
-}
-function openProductModal(id) {
-    editingProduct = id ? products.find((p) => p.id === id) : null;
-    document.getElementById("productModalTitle").textContent = id
-        ? "Edit Product"
-        : "Add New Product";
-    document
-        .getElementById("saveProductBtn")
-        .querySelector(".btn-text").textContent = id
-        ? "Update Product"
-        : "Save Product";
-    if (editingProduct) {
-        document.getElementById("pm_name").value = editingProduct.name || "";
-        document.getElementById("pm_price").value = editingProduct.price || "";
-        document.getElementById("pm_qty").value = editingProduct.qty || "";
-        document.getElementById("pm_desc").value =
-            editingProduct.description || "";
-        document.getElementById("pm_company").value =
-            editingProduct.company || "";
-        document.getElementById("pm_warranty").value =
-            editingProduct.warranty || "";
-        document.getElementById("pm_strap").value = editingProduct.strap || "";
-        document.getElementById("pm_discount").value =
-            editingProduct.discount || "";
-        document.getElementById("pm_img").value = editingProduct.img || "";
-    } else {
-        [
-            "pm_name",
-            "pm_price",
-            "pm_qty",
-            "pm_desc",
-            "pm_company",
-            "pm_warranty",
-            "pm_strap",
-            "pm_discount",
-            "pm_img",
-        ].forEach((id) => (document.getElementById(id).value = ""));
-    }
-    openModal("productModal");
-}
-function saveProduct(btn) {
-    showBtn(btn, true);
-    setTimeout(() => {
-        const data = {
-            name: document.getElementById("pm_name").value,
-            price: +document.getElementById("pm_price").value || 0,
-            qty: +document.getElementById("pm_qty").value || 0,
-            description: document.getElementById("pm_desc").value,
-            company: document.getElementById("pm_company").value,
-            warranty: +document.getElementById("pm_warranty").value || 0,
-            strap: document.getElementById("pm_strap").value,
-            discount: +document.getElementById("pm_discount").value || 0,
-            img: document.getElementById("pm_img").value,
-            rating: Math.floor(60 + Math.random() * 30),
-        };
-        if (editingProduct) {
-            Object.assign(editingProduct, data);
-            showToast("Product updated!", "success");
-        } else {
-            data.id = Date.now().toString();
-            products.push(data);
-            showToast("Product added!", "success");
-        }
-        closeModal("productModal");
-        renderCrudGrid();
-        showBtn(btn, false);
-    }, 1000);
-}
-function deleteProduct(id, btn) {
-    showBtn(btn, true);
-    setTimeout(() => {
-        products = products.filter((p) => p.id !== id);
-        showToast("Product deleted", "info");
-        renderCrudGrid();
-        showBtn(btn, false);
-    }, 800);
-}
+// function renderCrud(c) {
+//     c.innerHTML = `
+//     <div class="page-view">
+//     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+//       <div>
+//         <div style="font-size:18px;font-weight:700;color:var(--text)">Product Management</div>
+//         <div style="font-size:12px;color:var(--text3);margin-top:2px">${products.length} products in inventory</div>
+//       </div>
+//       ${currentUser && currentUser.role === 'admin' ? `<button class="btn btn-primary" onclick="openProductModal(null)"><i class="ti ti-plus"></i><span class="btn-text">Add Product</span></button>` : ''}
+//     </div>
+//     <div id="crudGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px"></div>
+//     </div>`;
+//     renderCrudGrid();
+// }
+
+// function renderCrudGrid() {
+//     const grid = document.getElementById('crudGrid');
+//     if (!grid) return;
+//     grid.innerHTML = products.map(p => `
+//     <div class="watch-card">
+//       <img src="${p.image || p.img}" class="watch-img" onerror="this.style.background='linear-gradient(135deg,var(--bg3),var(--bg4))'" alt="${p.name}">
+//       <div class="watch-body">
+//         <div class="watch-name">${p.name}</div>
+//         <div class="watch-price">$${p.price}</div>
+//         <div class="watch-meta">${p.company||'—'} · Stock: ${p.qty} · ${p.strap||'—'}</div>
+//         <div class="watch-meta" style="margin-top:4px">
+//           <span class="tag tag-up" style="margin-right:4px">${p.rating || 0}% rating</span>
+//           ${p.discount ? `<span class="tag tag-warn">${p.discount}% off</span>` : ''}
+//         </div>
+//         ${currentUser && currentUser.role === 'admin' ? `
+//         <div style="display:flex;gap:6px;margin-top:10px">
+//           <button class="btn btn-ghost btn-sm" style="flex:1" onclick="openProductModal('${p.id}')"><i class="ti ti-edit"></i> Edit</button>
+//           <button class="btn btn-danger btn-sm btn-icon" onclick="deleteProduct('${p.id}',this)"><i class="ti ti-trash"></i></button>
+//         </div>` : `<div style="margin-top:10px"><button class="btn btn-primary btn-sm" style="width:100%"><i class="ti ti-plus"></i> List Product</button></div>`}
+//       </div>
+//     </div>`).join('');
+// }
+
+// function openProductModal(id) {
+//     editingProduct = id ? products.find(p => p.id === id) : null;
+//     document.getElementById('productModalTitle').textContent = id ? 'Edit Product' : 'Add New Product';
+//     document.getElementById('saveProductBtn').querySelector('.btn-text').textContent = id ? 'Update Product' : 'Save Product';
+//     if (editingProduct) {
+//         document.getElementById('pm_name').value = editingProduct.name || '';
+//         document.getElementById('pm_price').value = editingProduct.price || '';
+//         document.getElementById('pm_qty').value = editingProduct.qty || '';
+//         document.getElementById('pm_desc').value = editingProduct.description || '';
+//         document.getElementById('pm_company').value = editingProduct.company || '';
+//         document.getElementById('pm_warranty').value = editingProduct.warranty || '';
+//         document.getElementById('pm_strap').value = editingProduct.strap || '';
+//         document.getElementById('pm_discount').value = editingProduct.discount || '';
+//         document.getElementById('pm_img').value = editingProduct.image || editingProduct.img || '';
+//     } else {
+//         ['pm_name', 'pm_price', 'pm_qty', 'pm_desc', 'pm_company', 'pm_warranty', 'pm_strap', 'pm_discount', 'pm_img'].forEach(id => document.getElementById(id).value = '');
+//     }
+//     openModal('productModal');
+// }
+
+// async function saveProduct(btn) {
+//     showBtn(btn, true);
+    
+//     const data = {
+//         name: document.getElementById('pm_name').value,
+//         price: document.getElementById('pm_price').value,
+//         qty: document.getElementById('pm_qty').value,
+//         description: document.getElementById('pm_desc').value,
+//         company: document.getElementById('pm_company').value,
+//         warranty: document.getElementById('pm_warranty').value,
+//         strap: document.getElementById('pm_strap').value,
+//         discount: document.getElementById('pm_discount').value,
+//         image: document.getElementById('pm_img').value,
+//     };
+    
+//     try {
+//         let result;
+//         if (editingProduct) {
+//             result = await apiCall(`/products/${editingProduct.id}`, {
+//                 method: 'PUT',
+//                 body: JSON.stringify(data)
+//             });
+//             if (result.success) {
+//                 showToast('Product updated!', 'success');
+//                 // Update local data
+//                 Object.assign(editingProduct, data);
+//             }
+//         } else {
+//             result = await apiCall('/products', {
+//                 method: 'POST',
+//                 body: JSON.stringify(data)
+//             });
+//             if (result.success) {
+//                 showToast('Product added!', 'success');
+//                 products.push(result.data);
+//             }
+//         }
+//         closeModal('productModal');
+//         renderCrudGrid();
+//     } catch (error) {
+//         showToast('Error: ' + error.message, 'error');
+//     }
+    
+//     showBtn(btn, false);
+// }
+
+// async function deleteProduct(id, btn) {
+//     showBtn(btn, true);
+//     try {
+//         const result = await apiCall(`/products/${id}`, {
+//             method: 'DELETE'
+//         });
+//         if (result.success) {
+//             products = products.filter(p => p.id !== id);
+//             showToast('Product deleted', 'info');
+//             renderCrudGrid();
+//         }
+//     } catch (error) {
+//         showToast('Error: ' + error.message, 'error');
+//     }
+//     showBtn(btn, false);
+// }
 
 // ---- ROLES PAGE ----
-function renderRoles(c) {
-    c.innerHTML = `
-  <div class="page-view">
-  <div class="grid-3" style="margin-bottom:14px">
-    <div class="mini-stat"><div><div class="mini-stat-val">${users.length}</div><div class="mini-stat-lbl">Total Users</div></div><i class="ti ti-users" style="font-size:22px;color:var(--accent)"></i></div>
-    <div class="mini-stat"><div><div class="mini-stat-val">${users.filter((u) => u.role === "admin").length}</div><div class="mini-stat-lbl">Admins</div></div><i class="ti ti-shield" style="font-size:22px;color:var(--gold)"></i></div>
-    <div class="mini-stat"><div><div class="mini-stat-val">${users.filter((u) => u.banned).length}</div><div class="mini-stat-lbl">Banned</div></div><i class="ti ti-ban" style="font-size:22px;color:var(--red)"></i></div>
-  </div>
-  <div class="card">
-    <div class="card-title">User Management</div>
-    <table>
-      <thead><tr><th>User</th><th>Email</th><th>Role</th><th>Location</th><th>Status</th><th>Actions</th></tr></thead>
-      <tbody id="usersBody">${renderUsersRows()}</tbody>
-    </table>
-  </div>
-  </div>`;
-}
-function renderUsersRows() {
-    return users
-        .map(
-            (u) => `<tr id="userRow_${u.id}">
-    <td><div style="display:flex;align-items:center;gap:10px">
-      <div style="width:34px;height:34px;border-radius:50%;background:var(--grad1);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;flex-shrink:0">${u.image}</div>
-      <div><div style="font-size:13px;font-weight:600;color:var(--text)">${u.username}</div><div style="font-size:11px;color:var(--text3)">${u.sex === "m" ? "Male" : "Female"}</div></div>
-    </div></td>
-    <td style="font-size:12px;color:var(--text3)">${u.email}</td>
-    <td><span class="badge ${u.role === "admin" ? "badge-admin" : "badge-user"}">${u.role}</span></td>
-    <td style="font-size:12px"><i class="ti ti-map-pin" style="font-size:12px"></i> ${u.location}</td>
-    <td><span class="badge ${u.banned ? "badge-banned" : "badge-active"}">${u.banned ? "Banned" : "Active"}</span></td>
-    <td><div style="display:flex;gap:4px;flex-wrap:wrap">
-      <button class="btn btn-ghost btn-sm" onclick="openEditUser('${u.id}')"><i class="ti ti-edit"></i></button>
-      <button class="btn btn-warn btn-sm" onclick="toggleBan('${u.id}',this)">${u.banned ? "Unban" : "Ban"}</button>
-      <button class="btn btn-danger btn-sm" onclick="deleteUser('${u.id}',this)"><i class="ti ti-trash"></i></button>
-    </div></td>
-  </tr>`,
-        )
-        .join("");
-}
-function openEditUser(id) {
-    const u = users.find((x) => x.id === id);
-    if (!u) return;
-    document.getElementById("userModalContent").innerHTML = `
-    <div class="form-group"><label class="form-label">Username</label><input class="form-input" id="eu_name" value="${u.username}"></div>
-    <div class="form-group"><label class="form-label">Email</label><input class="form-input" id="eu_email" value="${u.email}"></div>
-    <div class="form-group"><label class="form-label">Role</label>
-      <select class="form-input" id="eu_role"><option value="admin" ${u.role === "admin" ? "selected" : ""}>Admin</option><option value="user" ${u.role === "user" ? "selected" : ""}>User</option></select>
-    </div>
-    <div class="form-group"><label class="form-label">Location</label><input class="form-input" id="eu_loc" value="${u.location}"></div>
-    <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:8px">
-      <button class="btn btn-ghost" onclick="closeModal('userModal')">Cancel</button>
-      <button class="btn btn-primary" onclick="saveUser('${id}',this)"><span class="spin"></span><span class="btn-text">Save Changes</span></button>
-    </div>`;
-    openModal("userModal");
-}
-function saveUser(id, btn) {
-    showBtn(btn, true);
-    setTimeout(() => {
-        const u = users.find((x) => x.id === id);
-        if (u) {
-            u.username = document.getElementById("eu_name").value;
-            u.email = document.getElementById("eu_email").value;
-            u.role = document.getElementById("eu_role").value;
-            u.location = document.getElementById("eu_loc").value;
-        }
-        closeModal("userModal");
-        const body = document.getElementById("usersBody");
-        if (body) body.innerHTML = renderUsersRows();
-        showToast("User updated!", "success");
-        showBtn(btn, false);
-    }, 1000);
-}
-function toggleBan(id, btn) {
-    showBtn(btn, true);
-    setTimeout(() => {
-        const u = users.find((x) => x.id === id);
-        if (u) {
-            u.banned = !u.banned;
-            showToast(
-                u.banned ? `${u.username} banned` : `${u.username} unbanned`,
-                u.banned ? "error" : "success",
-            );
-        }
-        const body = document.getElementById("usersBody");
-        if (body) body.innerHTML = renderUsersRows();
-        showBtn(btn, false);
-    }, 800);
-}
-function deleteUser(id, btn) {
-    if (id === currentUser?.id) {
-        showToast("Can't delete your own account", "error");
-        return;
-    }
-    showBtn(btn, true);
-    setTimeout(() => {
-        users = users.filter((u) => u.id !== id);
-        const body = document.getElementById("usersBody");
-        if (body) body.innerHTML = renderUsersRows();
-        showToast("User deleted", "info");
-        showBtn(btn, false);
-    }, 800);
-}
 
-// ---- PROFILE PAGE ----
-function renderProfile(c) {
-    const u = currentUser;
-    const joined = new Date(u.createdAt * 1000).toLocaleDateString();
-    c.innerHTML = `
-  <div class="page-view">
-  <div class="grid-2">
-    <div class="card">
-      <div style="text-align:center;padding:12px 0">
-        <div style="width:80px;height:80px;border-radius:50%;background:var(--grad1);display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:700;color:#fff;margin:0 auto 12px;border:3px solid var(--accent)">${u.image}</div>
-        <div style="font-size:20px;font-weight:700;color:var(--text)">${u.username}</div>
-        <span class="badge ${u.role === "admin" ? "badge-admin" : "badge-user"}" style="margin-top:6px;display:inline-block">${u.role}</span>
-        <div style="font-size:13px;color:var(--text3);margin-top:8px">${u.bio || "No bio yet"}</div>
-      </div>
-      <div style="border-top:1px solid var(--border);padding-top:14px;margin-top:8px">
-        ${[
-            ["Email", u.email, "ti-mail"],
-            ["Phone", u.phone || "—", "ti-phone"],
-            ["Location", u.location, "ti-map-pin"],
-            ["Member since", joined, "ti-calendar"],
-            ["Gender", u.sex === "m" ? "Male" : "Female", "ti-gender-male"],
-        ]
-            .map(
-                ([l, v, i]) => `
-        <div class="mini-stat" style="margin-bottom:8px">
-          <div style="display:flex;align-items:center;gap:8px"><i class="ti ${i}" style="color:var(--accent2);font-size:16px"></i><div class="mini-stat-lbl">${l}</div></div>
-          <div style="font-size:13px;color:var(--text)">${v}</div>
-        </div>`,
-            )
-            .join("")}
-      </div>
-      <div style="margin-top:14px">
-        <button class="btn btn-danger" style="width:100%;justify-content:center" onclick="doLogout(this)">
-          <span class="spin"></span><span class="btn-text"><i class="ti ti-logout"></i> Sign Out</span>
-        </button>
-      </div>
-    </div>
-    <div>
-      <div class="card" style="margin-bottom:14px">
-        <div class="card-title">Edit Profile</div>
-        <div class="form-group"><label class="form-label">Username</label><input class="form-input" id="prof_name" value="${u.username}"></div>
-        <div class="form-group"><label class="form-label">Bio</label><textarea class="form-input" id="prof_bio" rows="3">${u.bio || ""}</textarea></div>
-        <div class="form-group"><label class="form-label">Location</label><input class="form-input" id="prof_loc" value="${u.location}"></div>
-        <div class="form-group"><label class="form-label">Phone</label><input class="form-input" id="prof_phone" value="${u.phone || ""}"></div>
-        <button class="btn btn-primary" onclick="saveProfile(this)"><span class="spin"></span><span class="btn-text">Save Changes</span></button>
-      </div>
-      <div class="card">
-        <div class="card-title">Account Stats</div>
-        <div class="grid-2">
-          <div class="mini-stat"><div><div class="mini-stat-val">${orders.filter((o) => o.user === u.username).length}</div><div class="mini-stat-lbl">My Orders</div></div></div>
-          <div class="mini-stat"><div><div class="mini-stat-val">${currentUser.role === "admin" ? products.length : "-"}</div><div class="mini-stat-lbl">Products</div></div></div>
-        </div>
-      </div>
-    </div>
-  </div>
-  </div>`;
-}
-function saveProfile(btn) {
-    showBtn(btn, true);
-    setTimeout(() => {
-        currentUser.username = document.getElementById("prof_name").value;
-        currentUser.bio = document.getElementById("prof_bio").value;
-        currentUser.location = document.getElementById("prof_loc").value;
-        currentUser.phone = document.getElementById("prof_phone").value;
-        document.getElementById("topbarName").textContent =
-            currentUser.username;
-        showToast("Profile updated!", "success");
-        showBtn(btn, false);
-    }, 1000);
-}
-function doLogout(btn) {
-    showBtn(btn, true);
-    setTimeout(() => {
-        currentUser = null;
-        document.getElementById("dashScreen").style.display = "none";
-        document.getElementById("authScreen").style.display = "flex";
-        showView("loginView");
-        showBtn(btn, false);
-    }, 800);
-}
 
-// ---- UTILITIES ----
-function openModal(id) {
-    document.getElementById(id).classList.add("open");
-}
-function closeModal(id) {
-    document.getElementById(id).classList.remove("open");
-}
-function toggleTheme() {
-    isDark = !isDark;
-    document.body.classList.toggle("light", !isDark);
-    document.getElementById("themeTrack").classList.toggle("on", !isDark);
-    document.getElementById("themeKnob").classList.toggle("on", !isDark);
-    document.getElementById("themeLabel").textContent = isDark
-        ? "Dark"
-        : "Light";
-}
-function showToast(msg, type = "info") {
-    const c = document.getElementById("toastContainer");
-    const t = document.createElement("div");
-    t.className = `toast toast-${type}`;
-    const icons = {
-        success: "ti-circle-check",
-        error: "ti-alert-circle",
-        info: "ti-info-circle",
-    };
-    t.innerHTML = `<i class="ti ${icons[type] || "ti-info-circle"}" style="color:var(--${type === "success" ? "green" : type === "error" ? "red" : "blue"})"></i><span>${msg}</span>`;
-    c.appendChild(t);
-    setTimeout(() => t.remove(), 3500);
-}
+// async function saveUser(id, btn) {
+//     showBtn(btn, true);
+//     try {
+//         const data = {
+//             username: document.getElementById('eu_name').value,
+//             email: document.getElementById('eu_email').value,
+//             role: document.getElementById('eu_role').value,
+//             location: document.getElementById('eu_loc').value,
+//         };
+        
+//         const result = await apiCall(`/users/${id}`, {
+//             method: 'PUT',
+//             body: JSON.stringify(data)
+//         });
+        
+//         if (result.success) {
+//             const u = users.find(x => x.id === id);
+//             if (u) {
+//                 Object.assign(u, data);
+//             }
+//             closeModal('userModal');
+//             const body = document.getElementById('usersBody');
+//             if (body) body.innerHTML = renderUsersRows();
+//             showToast('User updated!', 'success');
+//         }
+//     } catch (error) {
+//         showToast('Error: ' + error.message, 'error');
+//     }
+//     showBtn(btn, false);
+// }
 
-// Close modals on overlay click
-document.querySelectorAll(".modal-overlay").forEach((o) => {
-    o.addEventListener("click", (e) => {
-        if (e.target === o) o.classList.remove("open");
-    });
-});
+// async function toggleBan(id, btn) {
+//     showBtn(btn, true);
+//     try {
+//         const u = users.find(x => x.id === id);
+//         if (u) {
+//             const newStatus = !u.banned;
+//             const result = await apiCall(`/users/${id}`, {
+//                 method: 'PUT',
+//                 body: JSON.stringify({ banned: newStatus })
+//             });
+//             if (result.success) {
+//                 u.banned = newStatus;
+//                 showToast(newStatus ? `${u.username} banned` : `${u.username} unbanned`, newStatus ? 'error' : 'success');
+//                 const body = document.getElementById('usersBody');
+//                 if (body) body.innerHTML = renderUsersRows();
+//             }
+//         }
+//     } catch (error) {
+//         showToast('Error: ' + error.message, 'error');
+//     }
+//     showBtn(btn, false);
+// }
 
-// Close code input on background
-document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape")
-        document
-            .querySelectorAll(".modal-overlay.open")
-            .forEach((o) => o.classList.remove("open"));
-});
+// async function deleteUser(id, btn) {
+//     if (id === currentUser?.id) {
+//         showToast("Can't delete your own account", 'error');
+//         return;
+//     }
+//     showBtn(btn, true);
+//     try {
+//         const result = await apiCall(`/users/${id}`, {
+//             method: 'DELETE'
+//         });
+//         if (result.success) {
+//             users = users.filter(u => u.id !== id);
+//             const body = document.getElementById('usersBody');
+//             if (body) body.innerHTML = renderUsersRows();
+//             showToast('User deleted', 'info');
+//         }
+//     } catch (error) {
+//         showToast('Error: ' + error.message, 'error');
+//     }
+//     showBtn(btn, false);
+// }
+
+// async function saveProfile(btn) {
+//     showBtn(btn, true);
+//     try {
+//         const data = {
+//             username: document.getElementById('prof_name').value,
+//             bio: document.getElementById('prof_bio').value,
+//             location: document.getElementById('prof_loc').value,
+//             phone: document.getElementById('prof_phone').value,
+//         };
+        
+//         if (currentUser?.id) {
+//             const result = await apiCall(`/users/${currentUser.id}`, {
+//                 method: 'PUT',
+//                 body: JSON.stringify(data)
+//             });
+//             if (result.success) {
+//                 Object.assign(currentUser, data);
+//                 document.getElementById('topbarName').textContent = currentUser.username;
+//                 showToast('Profile updated!', 'success');
+//             }
+//         }
+//     } catch (error) {
+//         showToast('Error: ' + error.message, 'error');
+//     }
+//     showBtn(btn, false);
+// }
+
+// function toggleTheme() {
+//     isDark = !isDark;
+//     document.body.classList.toggle('light', !isDark);
+//     document.getElementById('themeTrack').classList.toggle('on', !isDark);
+//     document.getElementById('themeKnob').classList.toggle('on', !isDark);
+//     document.getElementById('themeLabel').textContent = isDark ? 'Dark' : 'Light';
+// }
+
+// Make functions globally accessible
+// window.togglePw = togglePw;
+// window.showView = showView;
+// window.doLogin = doLogin;
+// window.doSocialLogin = doSocialLogin;
+// window.doRegister = doRegister;
+// window.sendForgotCode = sendForgotCode;
+// window.codeNext = codeNext;
+// window.verifyCode = verifyCode;
+// window.resetPassword = resetPassword;
+window.showPage = showPage;
+window.openModal = openModal;
+window.closeModal = closeModal;
+window.toggleTheme = toggleTheme;
+window.showToast = showToast;
+window.openProductModal = openProductModal;
+window.saveProduct = saveProduct;
+window.deleteProduct = deleteProduct;
+window.openEditUser = openEditUser;
+window.saveUser = saveUser;
+window.toggleBan = toggleBan;
+window.deleteUser = deleteUser;
+window.saveProfile = saveProfile;
+window.doLogout = doLogout;
+window.filterSold = filterSold;

@@ -1,5 +1,5 @@
 <?php
-
+// app/http/Controller/AuthController.php
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;

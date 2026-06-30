@@ -155,3 +155,35 @@ $ php artisan optimize:clear
   compiled ............................................................................................................................. 1.67ms DONE
   events ............................................................................................................................... 0.47ms DONE
   routes ............................................................................................................................... 0.39ms DONE
+
+
+  
+USER@DESKTOP-M1TVSAR MINGW64 /d/ETEC/11_1_30mns/etec-final-project-laravel (main)
+$ git add .
+warning: in the working copy of 'NOTE_Run_project.md', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'app/Http/Controllers/AuthController.php', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'note.txt', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'public/js/dashboard.js', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'public/js/products.js', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'resources/views/dashboard.blade.php', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'resources/views/dashboard01.blade.php', CRLF will be replaced by LF the next time Git touches it
+
+USER@DESKTOP-M1TVSAR MINGW64 /d/ETEC/11_1_30mns/etec-final-project-laravel (main)
+$ git commit -m "complete api display Product and do CRUD from UI"
+[main 20c6a09] complete api display Product and do CRUD from UI
+ 8 files changed, 337 insertions(+), 222 deletions(-)
+ create mode 100644 TEST_Product.MD
+
+USER@DESKTOP-M1TVSAR MINGW64 /d/ETEC/11_1_30mns/etec-final-project-laravel (main)
+$ git push
+Enumerating objects: 34, done.
+Counting objects: 100% (34/34), done.
+Delta compression using up to 16 threads
+Compressing objects: 100% (16/16), done.
+Writing objects: 100% (18/18), 2.86 KiB | 1.43 MiB/s, done.
+Total 18 (delta 11), reused 0 (delta 0), pack-reused 0 (from 0)
+remote: Resolving deltas: 100% (11/11), completed with 11 local objects.
+remote: This repository moved. Please use the new location:
+remote:   https://github.com/Longfou1900/Etec_Final_Project_Flutter_Laravel.git
+To https://github.com/Longfou1900/Etec-Final_Project_Flutter_Laravel.git
+   478f523..20c6a09  main -> main

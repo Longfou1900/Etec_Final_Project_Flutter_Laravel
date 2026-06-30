@@ -1,5 +1,5 @@
 //resoucres/js/charts.js
-// let charts = {};
+let charts = {};
 
 // Clean up charts when leaving a page
 // function destroyCharts() {
