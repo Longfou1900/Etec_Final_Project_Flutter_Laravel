@@ -1,147 +1,6 @@
-//resoucres/js/products.js
-// let products = [];
-// let editingProductId = null;
-
-// Helper to grab token
-// const getAuthHeaders = () => ({
-//     'Content-Type': 'application/json',
-//     'Accept': 'application/json',
-//     'Authorization': `Bearer ${localStorage.getItem('auth_token')}`
-// });
-
-// // 1. Fetch from Laravel API
-// async function loadProductsFromDatabase() {
-//     try {
-//         const response = await fetch('/api/products', { headers: getAuthHeaders() });
-//         const data = await response.json();
-        
-//         if (data.success) {
-//             products = data.data; // Store real watches
-//             renderCrudGrid();     // Update screen
-//         }
-//     } catch (error) {
-//         showToast('Failed to load products', 'error');
-//     }
-// }
-
-// // 2. Render Page
-// function renderCrud(container) {
-//     container.innerHTML = `
-//     <div class="page-view">
-//         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
-//             <div>
-//                 <div style="font-size:18px;font-weight:700;color:var(--text)">Product Management</div>
-//                 <div style="font-size:12px;color:var(--text3);margin-top:2px" id="productCount">Loading products...</div>
-//             </div>
-//             <button class="btn btn-primary" onclick="openProductModal(null)"><i class="ti ti-plus"></i><span class="btn-text">Add Product</span></button>
-//         </div>
-//         <div id="crudGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px"></div>
-//     </div>`;
-    
-//     loadProductsFromDatabase(); // Fetch real data when page loads!
-// }
-
-// // 3. Render Cards
-// function renderCrudGrid() {
-//     const grid = document.getElementById('crudGrid');
-//     document.getElementById('productCount').textContent = `${products.length} products in inventory`;
-    
-//     if(!grid) return;
-    
-//     grid.innerHTML = products.map(p => `
-//     <div class="watch-card">
-//         <img src="${p.image}" class="watch-img" onerror="this.style.background='linear-gradient(135deg,var(--bg3),var(--bg4))'">
-//         <div class="watch-body">
-//             <div class="watch-name">${p.name}</div>
-//             <div class="watch-price">$${p.price}</div>
-//             <div class="watch-meta">Stock: ${p.qty}</div>
-//             <div style="display:flex;gap:6px;margin-top:10px">
-//                 <button class="btn btn-ghost btn-sm" style="flex:1" onclick="openProductModal('${p.id}')"><i class="ti ti-edit"></i> Edit</button>
-//                 <button class="btn btn-danger btn-sm btn-icon" onclick="deleteProduct('${p.id}', this)"><i class="ti ti-trash"></i></button>
-//             </div>
-//         </div>
-//     </div>`).join('');
-// }
-
-// // 4. Modal Setup
-// function openProductModal(id) {
-//     editingProductId = id;
-//     document.getElementById('productModalTitle').textContent = id ? 'Edit Product' : 'Add New Product';
-    
-//     if (id) {
-//         const prod = products.find(p => p.id == id);
-//         document.getElementById('pm_name').value = prod.name;
-//         document.getElementById('pm_price').value = prod.price;
-//         document.getElementById('pm_qty').value = prod.qty;
-//         document.getElementById('pm_desc').value = prod.description;
-//         document.getElementById('pm_img').value = prod.image;
-//     } else {
-//         ['pm_name','pm_price','pm_qty','pm_desc','pm_img'].forEach(i => document.getElementById(i).value = '');
-//     }
-//     openModal('productModal');
-// }
-
-// // 5. Insert / Update API Request
-// async function saveProduct(btn) {
-//     showBtn(btn, true);
-    
-//     const payload = {
-//         name: document.getElementById('pm_name').value,
-//         price: document.getElementById('pm_price').value,
-//         qty: document.getElementById('pm_qty').value,
-//         description: document.getElementById('pm_desc').value,
-//         image: document.getElementById('pm_img').value
-//     };
-
-//     const url = editingProductId ? `/api/product/${editingProductId}` : '/api/product';
-//     const method = editingProductId ? 'PUT' : 'POST';
-
-//     try {
-//         const response = await fetch(url, {
-//             method: method,
-//             headers: getAuthHeaders(),
-//             body: JSON.stringify(payload)
-//         });
-
-//         if (response.ok) {
-//             showToast(editingProductId ? 'Product updated!' : 'Product added!', 'success');
-//             closeModal('productModal');
-//             loadProductsFromDatabase(); // Refresh grid
-//         } else {
-//             showToast('Validation failed. Check fields.', 'error');
-//         }
-//     } catch (e) {
-//         showToast('Server error', 'error');
-//     }
-    
-//     showBtn(btn, false);
-// }
-
-// // 6. Delete API Request
-// async function deleteProduct(id, btn) {
-//     if(!confirm("Are you sure you want to delete this watch?")) return;
-//     showBtn(btn, true);
-    
-//     try {
-//         const response = await fetch(`/api/product/${id}`, {
-//             method: 'DELETE',
-//             headers: getAuthHeaders()
-//         });
-
-//         if (response.ok) {
-//             showToast('Product deleted', 'info');
-//             loadProductsFromDatabase(); // Refresh grid
-//         }
-//     } catch (e) {
-//         showToast('Failed to delete', 'error');
-//     }
-    
-//     showBtn(btn, false);
-// }
-// -----------------------------------------------------------------------
 // public/js/products.js
 
-let products       = [];
+let products = [];
 let editingProductId = null;
 
 // 1. Load products from Laravel → MockAPI proxy
@@ -163,7 +22,11 @@ async function loadProductsFromDatabase() {
 }
 
 // 2. Render the CRUD page container
-function renderCrud(container) {
+async function renderCrud(container) {
+    container.innerHTML = `loading...`;   // your existing HTML
+    await loadProductsFromDatabase();
+    renderCrudGrid();
+
     const isAdmin = currentUser && currentUser.role === 'admin';
     container.innerHTML = `
     <div class="page-view">
@@ -331,7 +194,9 @@ async function deleteProduct(id, btn) {
 }
 
 // ---- ANALYTICS PAGE ----
-function renderAnalytics(c) {
+async function renderAnalytics(c) {
+    c.innerHTML = `<div class="page-view"><p>Loading...</p></div>`;
+    await loadProductsFromDatabase();   // wait for products to populate
     const totalRevenue = products.reduce((a, p) => a + (parseFloat(p.price) || 0) * (parseInt(p.qty) || 0), 0);
     const avgRating = products.length > 0 ? products.reduce((a, p) => a + (parseInt(p.rating) || 0), 0) / products.length : 0;
     
@@ -492,7 +357,23 @@ function renderAnalytics(c) {
 }
 
 // ---- ORDERS PAGE ----
-function renderOrders(c) {
+async function renderOrders(c) {
+    c.innerHTML = `<div class="page-view"><p>Loading...</p></div>`;
+    await loadProductsFromDatabase();  
+
+    // Derive a pseudo "orders" list from product data since there's no dedicated orders API yet
+    const statusCycle = ['delivered', 'shipping', 'processing', 'pending'];
+    const orders = products.map((p, i) => ({
+        id: `ORD-${String(p.id).padStart(3, '0')}`,
+        user: p.saler || p.username || 'Unknown',
+        product: p.name,
+        price: parseFloat(p.price) || 0,
+        date: p.createdAt ? new Date(p.createdAt * 1000).toLocaleDateString() : '—',
+        location: p.location || '—',
+        tracking: `TRK${1000 + i}`,
+        status: statusCycle[i % statusCycle.length],
+    }));
+
     const statusMap = {
         delivered: { cls: 'badge-active', icon: 'ti-circle-check', steps: 4 },
         shipping: { cls: 'badge-user', icon: 'ti-truck', steps: 3 },
@@ -590,7 +471,23 @@ function renderOrders(c) {
 }
 
 // ---- SOLD PAGE ----
-function renderSold(c) {
+async function renderSold(c) {
+        c.innerHTML = `<div class="page-view"><p>Loading...</p></div>`;
+        await loadProductsFromDatabase();  
+
+    // Derive orders from product data (same logic as renderOrders, until a real orders API exists)
+    const statusCycle = ['delivered', 'shipping', 'processing', 'pending'];
+    const orders = products.map((p, i) => ({
+        id: `ORD-${String(p.id).padStart(3, '0')}`,
+        user: p.saler || p.username || 'Unknown',
+        product: p.name,
+        price: parseFloat(p.price) || 0,
+        date: p.createdAt ? new Date(p.createdAt * 1000).toLocaleDateString() : '—',
+        location: p.location || '—',
+        tracking: `TRK${1000 + i}`,
+        status: statusCycle[i % statusCycle.length],
+    }));
+
     const totalRevenue = orders.reduce((a, o) => a + o.price, 0);
     const avgPrice = orders.length > 0 ? totalRevenue / orders.length : 0;
     const uniqueBuyers = [...new Set(orders.map(o => o.user))].length;

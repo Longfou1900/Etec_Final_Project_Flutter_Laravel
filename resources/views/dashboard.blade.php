@@ -20,8 +20,8 @@
     <div style="width:100%;max-width:360px">
       <!-- LOGIN VIEW -->
       <div id="loginView">
-        <div class="auth-logo">⌚ ChronoStore</div>
-        <p class="auth-subtitle">Sign in to your dashboard</p>
+        <div class="auth-logo">⌚Etec Watch</div>
+        <p class="auth-subtitle">WELOCOME! Sign in here.</p>
         <div class="form-group">
           <label class="form-label">Username</label>
           <input class="form-input" id="loginUser" placeholder="Enter username" value="Ah Boto">
@@ -64,7 +64,7 @@
 
       <!-- REGISTER VIEW -->
       <div id="registerView" style="display:none">
-        <div class="auth-logo">⌚ ChronoStore</div>
+        <div class="auth-logo">⌚Etec Watch</div>
         <p class="auth-subtitle">Create your account</p>
         <div class="form-group">
           <label class="form-label">Username</label>
@@ -98,7 +98,7 @@
 
       <!-- FORGOT PASSWORD VIEW -->
       <div id="forgotView" style="display:none">
-        <div class="auth-logo">⌚ ChronoStore</div>
+        <div class="auth-logo">⌚Etec Watch</div>
         <p class="auth-subtitle">Reset your password</p>
         <div class="forgot-step active" id="forgotStep1">
           <div class="form-group">
@@ -157,7 +157,7 @@
     <div class="auth-orb" style="width:150px;height:150px;background:#3b82f6;top:40%;right:30%"></div>
     <div class="auth-right-text">
       <div style="font-size:64px;margin-bottom:16px">⌚</div>
-      <h2>ChronoStore</h2>
+      <h2>Etec Watch</h2>
       <p>Premium watch management platform. Track sales, analytics, and inventory in real-time.</p>
       <div style="margin-top:32px;display:flex;gap:24px;justify-content:center">
         <div style="text-align:center"><div style="font-size:24px;font-weight:700;color:#a78bfa">2.4K+</div><div style="font-size:11px;opacity:0.6;margin-top:2px">Watches Sold</div></div>
@@ -263,9 +263,9 @@
 </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
     <script src="{{ asset('js/utils.js') }}"></script>
-    <!-- <script src="{{ asset('js/dashboard.js') }}"></script> -->
     <script src="{{ asset('js/auth.js') }}"></script>
     <script src="{{ asset('js/charts.js') }}"></script>
     <script src="{{ asset('js/products.js') }}"></script> 
+    <!-- <script src="{{ asset('js/dashboard.js') }}"></script> -->
  </body>
 </html>
