@@ -89,8 +89,14 @@ async function doLogin(btn) {
         });
 
         const data = await response.json();
-
+        
         if (data.success) {
+            //after user banned
+            if (data.user.banned) {
+                showToast('Your account has been banned. Contact support.', 'error');
+                showBtn(btn, false);
+                return;
+            }
             // Store user in localStorage (no Sanctum token — MockAPI is stateless)
             localStorage.setItem('current_user', JSON.stringify(data.user));
             showToast('Login successful!', 'success');
@@ -420,19 +426,48 @@ async function doLogout(btn) {
 //         }
 //     }
 // });
-document.addEventListener('DOMContentLoaded', () => {
-    const saved = localStorage.getItem('current_user');
-    if (saved) {
+    // Re-validate ban status from API on every session restore
+    async function validateSession(userData) {
         try {
-            const user = JSON.parse(saved);
-            showDashboard(user);       // resume session
-            return;
+            const res = await fetch(`/api/users/${userData.id}`);
+            const result = await res.json();
+            if (result.success && result.data.banned) {
+                localStorage.removeItem('current_user');
+                document.getElementById('authScreen').style.display = 'flex';
+                document.getElementById('dashScreen').style.display = 'none';
+                showView('loginView');
+                showToast('Your account has been banned.', 'error');
+                return false;
+            }
         } catch (e) {
-            localStorage.removeItem('current_user');
+            // If API unreachable, fall through and trust localStorage
         }
+        return true;
     }
-    // No session — show login
-    document.getElementById('authScreen').style.display = 'flex';
-    document.getElementById('dashScreen').style.display  = 'none';
-    showView('loginView');
-});
+
+    document.addEventListener('DOMContentLoaded', async () => {
+        const saved = localStorage.getItem('current_user');
+        if (saved) {
+            try {
+                const user = JSON.parse(saved);
+                const valid = await validateSession(user);
+                // //after user banned
+                // if (user.banned) {
+                //     localStorage.removeItem('current_user');
+                //     document.getElementById('authScreen').style.display = 'flex';
+                //     document.getElementById('dashScreen').style.display = 'none';
+                //     showView('loginView');
+                //     return;
+                // }
+
+                showDashboard(user); 
+                return;
+            } catch (e) {
+                localStorage.removeItem('current_user');
+            }
+        }
+        // No session — show login
+        document.getElementById('authScreen').style.display = 'flex';
+        document.getElementById('dashScreen').style.display  = 'none';
+        showView('loginView');
+    });

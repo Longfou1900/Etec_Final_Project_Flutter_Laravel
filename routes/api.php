@@ -17,9 +17,14 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::post('/logout',   [AuthController::class, 'logout']);
  
 // ---- USERS (admin: manage users via MockAPI) ----
-Route::get('/users',         [AuthController::class, 'getUsers']);
-Route::put('/users/{id}',    [AuthController::class, 'updateUser']);
-Route::delete('/users/{id}', [AuthController::class, 'deleteUser']);
+Route::prefix('users')->group(function () {
+    Route::get('/',              [AuthController::class, 'getUsers']);
+    Route::get('/{id}',          [AuthController::class, 'getUser']); 
+    Route::post('/',             [AuthController::class, 'createUser']);
+    Route::put('/{id}',          [AuthController::class, 'updateUser']);
+    Route::patch('/{id}',        [AuthController::class, 'updateUser']); 
+    Route::delete('/{id}',       [AuthController::class, 'deleteUser']);
+});
  
 // ---- PRODUCTS (proxy to MockAPI) ----
 Route::get('/products', [ProductController::class, 'getProduct']);

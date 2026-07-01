@@ -74,6 +74,16 @@
     // showPage('analytics', document.querySelector('.nav-item'));
     // }
     function showDashboard(userData) {
+        //after user banned
+        if (userData.banned) {
+            localStorage.removeItem('current_user');
+            document.getElementById('authScreen').style.display = 'flex';
+            document.getElementById('dashScreen').style.display = 'none';
+            showView('loginView');
+            showToast('Your account has been banned.', 'error');
+            return;
+        }
+
         currentUser = userData;
         document.getElementById('authScreen').style.display = 'none';
         document.getElementById('dashScreen').style.display  = 'flex';
@@ -86,7 +96,7 @@
 
         // Show/hide admin-only sidebar items
         document.querySelectorAll('.admin-only').forEach(el => {
-            el.style.display = currentUser.role === 'admin' ? 'flex' : 'none';
+            el.style.display = ['admin', 'superadmin'].includes(currentUser.role) ? 'flex' : 'none';
         });
 
         showPage('analytics', document.querySelector('.nav-item'));
@@ -120,7 +130,36 @@
     //     else if (page === 'roles') renderRoles(c);
     //     // else if (page === 'profile') renderProfile(c);
     // }
-    function showPage(page, el) {
+    async function showPage(page, el) {
+        //after user banned
+        if (currentUser?.banned) {
+            localStorage.removeItem('current_user');
+            document.getElementById('dashScreen').style.display = 'none';
+            document.getElementById('authScreen').style.display = 'flex';
+            showView('loginView');
+            showToast('Your account has been banned.', 'error');
+            return;
+        }
+        
+        // // Re-fetch current user's live ban status from API
+        // try {
+        //     const res = await fetch(`/api/users/${currentUser.id}`);
+        //     const result = await res.json();
+        //     if (result.success && result.data.banned) {
+        //         localStorage.removeItem('current_user');
+        //         document.getElementById('dashScreen').style.display = 'none';
+        //         document.getElementById('authScreen').style.display = 'flex';
+        //         showView('loginView');
+        //         showToast('Your account has been banned.', 'error');
+        //         return;
+        //     }
+        //     // Update localStorage with fresh data
+        //     currentUser = { ...currentUser, banned: result.data.banned };
+        //     localStorage.setItem('current_user', JSON.stringify(currentUser));
+        // } catch (e) {
+        //     // API unreachable — fall through and trust localStorage
+        // }
+
         document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
         if (el) el.classList.add('active');
 
@@ -626,7 +665,7 @@
             <div style="text-align:center;padding:12px 0">
                 <div style="width:80px;height:80px;border-radius:50%;background:var(--grad1);display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:700;color:#fff;margin:0 auto 12px;border:3px solid var(--accent)">${u.image}</div>
                 <div style="font-size:20px;font-weight:700;color:var(--text)">${u.username}</div>
-                <span class="badge ${u.role==='admin'?'badge-admin':'badge-user'}" style="margin-top:6px;display:inline-block">${u.role}</span>
+                <span class="badge ${['admin', 'superadmin'].includes(u.role) ? 'badge-admin':'badge-user'}" style="margin-top:6px;display:inline-block">${u.role}</span>
                 <div style="font-size:13px;color:var(--text3);margin-top:8px">${u.bio||'No bio yet'}</div>
             </div>
             <div style="border-top:1px solid var(--border);padding-top:14px;margin-top:8px">
@@ -678,6 +717,7 @@
     //=======================
     // action User--- EDIT --
     //=======================
+
     // function openEditUser(id){
     //     const u = users.find(x => x.id === id);
     //     if(!u) return;
@@ -787,7 +827,8 @@
             const res = await fetch(`/api/users/${id}`, {
                 method: 'PATCH',
                 headers: { 'Content-Type': 'application/json', ...getAuthHeaders() },
-                body: JSON.stringify({ role: newRole })
+                // body: JSON.stringify({ role: newRole })
+                body: JSON.stringify({ ...u, role: newRole })  // full object
             });
             const result = await res.json();
             if (result.success) {
@@ -830,7 +871,8 @@
             const res = await fetch(`/api/users/${id}`, {
                 method: 'PATCH',
                 headers: { 'Content-Type': 'application/json', ...getAuthHeaders() },
-                body: JSON.stringify({ banned: nextBanned })
+                // body: JSON.stringify({ banned: nextBanned })
+                body: JSON.stringify({ ...u, banned: nextBanned })  // full object
             });
             const result = await res.json();
             if (result.success) {

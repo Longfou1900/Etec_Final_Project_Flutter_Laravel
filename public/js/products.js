@@ -23,11 +23,21 @@ async function loadProductsFromDatabase() {
 
 // 2. Render the CRUD page container
 async function renderCrud(container) {
+    //after user banned
+    if (currentUser?.banned) {
+        container.innerHTML = `<div class="page-view">
+            <div style="color:var(--text3);padding:40px;text-align:center">
+                <i class="ti ti-ban" style="font-size:40px;display:block;margin-bottom:12px"></i>
+                Your account has been banned.
+            </div>
+        </div>`;
+        return;
+    }
     container.innerHTML = `loading...`;   // your existing HTML
     await loadProductsFromDatabase();
     renderCrudGrid();
 
-    const isAdmin = currentUser && currentUser.role === 'admin';
+    const isAdmin = currentUser && ['admin', 'superadmin'].includes(currentUser.role);
     container.innerHTML = `
     <div class="page-view">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
@@ -73,7 +83,8 @@ function renderCrudGrid() {
     if (count) count.textContent = `${products.length} products in inventory`;
     if (!grid)  return;
 
-    const isAdmin = currentUser && currentUser.role === 'admin';
+    // const isAdmin = currentUser && currentUser.role === 'admin';
+    const isAdmin = currentUser && ['admin', 'superadmin'].includes(currentUser.role);
 
     grid.innerHTML = products.map(p => `
     <div class="watch-card">
@@ -126,6 +137,10 @@ function openProductModal(id) {
 
 // 5. Save (insert or update) via API
 async function saveProduct(btn) {
+    if (currentUser?.banned || !['admin','superadmin'].includes(currentUser?.role)) {
+        showToast('Not permitted', 'error');
+        return;
+    }
     showBtn(btn, true);
 
     const payload = {
@@ -168,6 +183,12 @@ async function saveProduct(btn) {
 
 // 6. Delete via API
 async function deleteProduct(id, btn) {
+
+    if (currentUser?.banned || !['admin','superadmin'].includes(currentUser?.role)) {
+        showToast('Not permitted', 'error');
+        return;
+    }
+    
     if (!confirm('Delete this watch?')) return;
     showBtn(btn, true);
 

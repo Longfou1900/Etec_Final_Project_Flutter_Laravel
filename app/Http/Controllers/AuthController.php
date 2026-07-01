@@ -131,11 +131,14 @@ class AuthController extends Controller
     }
 
     // GET ALL USERS — for admin Roles page
-    public function getUsers()
+    // public function getUsers()
+    public function getUsers($id)
     {
-        $response = Http::withoutVerifying()->get($this->apiUrl);
+        // $response = Http::withoutVerifying()->get($this->apiUrl);
+        $response = Http::withoutVerifying()->get("{$this->apiUrl}/{$id}");
         if (!$response->successful()) {
-            return response()->json(['success' => false, 'message' => 'Cannot fetch users.'], 500);
+            // return response()->json(['success' => false, 'message' => 'Cannot fetch users.'], 500);
+            return response()->json(['success' => false, 'message' => 'User not found.'], 404);
         }
         return response()->json(['success' => true, 'data' => $response->json()], 200);
     }
