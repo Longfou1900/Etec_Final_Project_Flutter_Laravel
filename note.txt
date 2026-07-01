@@ -187,3 +187,30 @@ remote: This repository moved. Please use the new location:
 remote:   https://github.com/Longfou1900/Etec_Final_Project_Flutter_Laravel.git
 To https://github.com/Longfou1900/Etec-Final_Project_Flutter_Laravel.git
    478f523..20c6a09  main -> main
+
+
+
+   $ git add .
+warning: in the working copy of 'app/Http/Controllers/AuthController.php', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'public/js/auth.js', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'public/js/products.js', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'public/js/utils.js', CRLF will be replaced by LF the next time Git touches it
+
+USER@DESKTOP-M1TVSAR MINGW64 /d/ETEC/11_1_30mns/etec-final-project-laravel (main)
+$ git commit -m "completed banned users"
+[main bfc8fae] completed banned users
+ 5 files changed, 132 insertions(+), 26 deletions(-)
+
+USER@DESKTOP-M1TVSAR MINGW64 /d/ETEC/11_1_30mns/etec-final-project-laravel (main)
+$ git push
+Enumerating objects: 25, done.
+Counting objects: 100% (25/25), done.
+Delta compression using up to 16 threads
+Compressing objects: 100% (13/13), done.
+Writing objects: 100% (13/13), 2.79 KiB | 1.40 MiB/s, done.
+Total 13 (delta 8), reused 0 (delta 0), pack-reused 0 (from 0)
+remote: Resolving deltas: 100% (8/8), completed with 8 local objects.
+remote: This repository moved. Please use the new location:
+remote:   https://github.com/Longfou1900/Etec_Final_Project_Flutter_Laravel.git
+To https://github.com/Longfou1900/Etec-Final_Project_Flutter_Laravel.git
+   6c4696b..bfc8fae  main -> main

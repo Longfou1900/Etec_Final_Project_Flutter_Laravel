@@ -59,6 +59,8 @@ class AuthController extends Controller
                 'sex'      => $matched['sex']      ?? null,
                 'image'    => $matched['image']    ?? null,
                 'bio'      => $matched['bio']      ?? null,
+                'banned'   => $matched['banned']   ?? false,
+                'createdAt'=> $matched['createdAt'] ?? null,
             ],
         ], 200);
     }
@@ -131,16 +133,49 @@ class AuthController extends Controller
     }
 
     // GET ALL USERS — for admin Roles page
-    // public function getUsers()
-    public function getUsers($id)
+    public function getUsers()
     {
         // $response = Http::withoutVerifying()->get($this->apiUrl);
-        $response = Http::withoutVerifying()->get("{$this->apiUrl}/{$id}");
+        $response = Http::withoutVerifying()->get($this->apiUrl);
         if (!$response->successful()) {
             // return response()->json(['success' => false, 'message' => 'Cannot fetch users.'], 500);
             return response()->json(['success' => false, 'message' => 'User not found.'], 404);
         }
         return response()->json(['success' => true, 'data' => $response->json()], 200);
+    }
+
+    // GET SINGLE USER — separate method for validateSession
+    public function getUser($id)
+    {
+        $response = Http::withoutVerifying()->get("{$this->apiUrl}/{$id}");
+        if (!$response->successful()) {
+            return response()->json(['success' => false, 'message' => 'User not found.'], 404);
+        }
+        return response()->json(['success' => true, 'data' => $response->json()], 200);
+    }
+
+    public function createUser(Request $request)
+    {
+        $response = Http::withoutVerifying()->post($this->apiUrl, [
+            'username' => $request->username,
+            'email'    => $request->email,
+            'password' => $request->password,
+            'role'     => $request->role     ?? 'user',
+            'location' => $request->location ?? '',
+            'phone'    => $request->phone    ?? '',
+            'sex'      => $request->sex      ?? '',
+            'image'    => '',
+            'bio'      => '',
+            'banned'   => false,
+            'code'     => str_pad(random_int(0, 999999), 6, '0', STR_PAD_LEFT),
+            'createdAt'=> now()->timestamp,
+        ]);
+
+        if (!$response->successful()) {
+            return response()->json(['success' => false, 'message' => 'Failed to create user.'], 500);
+        }
+
+        return response()->json(['success' => true, 'message' => 'User created.', 'data' => $response->json()], 201);
     }
 
     // UPDATE USER — role change, ban, etc.
